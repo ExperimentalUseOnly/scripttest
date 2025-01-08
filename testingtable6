@@ -673,5 +673,6 @@ local ui_background_rotation = game:GetService("RunService").Stepped:Connect(fun
 	ui_base_gradient.Color = getgenv().background_gradient_color
 	ui_base_gradient.Rotation = ui_base_gradient.Rotation + 1
 end)
+return Tabs
 end
 return ProBacon
