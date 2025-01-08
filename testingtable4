@@ -657,7 +657,7 @@ getgenv().background_gradient_color = ColorSequence.new{ColorSequenceKeypoint.ne
 
 ui_base.Size = UDim2.new(0,0,0,0)
 
-function toggle_ui(state)
+function ProBacon:toggle_ui(state)
 	local tween
 	if state then
 		tween = game:GetService("TweenService"):Create(ui_base, TweenInfo.new(0.25), {Size = UDim2.new(0, 475, 0, 285)})
@@ -668,11 +668,10 @@ function toggle_ui(state)
 	tween.Completed:Wait()
 end
 
-task.wait(3)
-toggle_ui(true)
-
 
 local ui_background_rotation = game:GetService("RunService").Stepped:Connect(function()
 	ui_base_gradient.Color = getgenv().background_gradient_color
 	ui_base_gradient.Rotation = ui_base_gradient.Rotation + 1
 end)
+
+return ProBacon
