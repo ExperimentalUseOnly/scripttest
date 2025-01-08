@@ -46,7 +46,7 @@ getgenv().ui_background_color_scheme = {
 
 
 
-function ProBacon()
+function ProBacon.CreateUi()
 --main
 local ProBaconUI = Instance.new("ScreenGui", game.CoreGui)
 local ui = Instance.new("Frame", ProBaconUI)
