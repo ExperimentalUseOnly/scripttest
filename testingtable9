@@ -57,7 +57,6 @@ function ProBacon.CreateGui()
     local minimize = Instance.new("ImageButton", title_bar)
     local tab_holder = Instance.new("ScrollingFrame", ui_base)
     local UIListLayout = Instance.new("UIListLayout", tab_holder)
-    local content_holder = Instance.new("ScrollingFrame", ui_base)
     ProBaconUI.Name = "ProBaconUI"
 
     ui.Name = "ui"
@@ -184,7 +183,12 @@ function ProBacon.CreateGui()
     function Tabs:CreateTab(name, selectedAsCurrTab)
         name = name or "Button"
         selectedAsCurrTab = selectedAsCurrTab or false
-
+        local content_holder = Instance.new("ScrollingFrame", ui_base)
+        local UIListLayout_2 = Instance.new("UIListLayout", content_holder)
+        local UIPadding = Instance.new("UIPadding", content_holder)
+        UIListLayout_2.SortOrder = Enum.SortOrder.LayoutOrder
+        UIListLayout_2.Padding = UDim.new(0, 5)
+        UIPadding.PaddingRight = UDim.new(0, 5)
         content_holder.Name = "content_holder"
         content_holder.Active = true
         content_holder.AnchorPoint = Vector2.new(1, 0)
@@ -195,6 +199,7 @@ function ProBacon.CreateGui()
         content_holder.Position = UDim2.new(1, -6, 0, 29)
         content_holder.Size = UDim2.new(0, 357, 0, 249)
         content_holder.ScrollBarThickness = 3
+        
         local function updatecanvasize()
             local canvastween = game:GetService("TweenService"):Create(content_holder, TweenInfo.new(0.15, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {CanvasSize = UDim2.new(0, 0, 0, content_holder.UIListLayout.AbsoluteContentSize.Y+1)})
             canvastween:Play()
@@ -271,8 +276,6 @@ function ProBacon.CreateGui()
                 content = content or "Label"
                 local label = Instance.new("TextLabel")
                 Instance.new("UICorner", label)
-                local UIListLayout_2 = Instance.new("UIListLayout", content_holder)
-                local UIPadding = Instance.new("UIPadding", content_holder)
                 label.Name = "label"
                 label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
                 label.BackgroundTransparency = 1.000
@@ -284,9 +287,6 @@ function ProBacon.CreateGui()
                 label.TextColor3 = Color3.fromRGB(255, 255, 255)
                 label.TextSize = 14.000
                 label.TextXAlignment = Enum.TextXAlignment.Left
-                UIListLayout_2.SortOrder = Enum.SortOrder.LayoutOrder
-                UIListLayout_2.Padding = UDim.new(0, 5)
-                UIPadding.PaddingRight = UDim.new(0, 5)
                 function LabelFunctions:UpdateLabel(newContent)
                     label.Text = "` "..newContent
                 end
