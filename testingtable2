@@ -636,12 +636,12 @@ slider_input.TextXAlignment = Enum.TextXAlignment.Right
 
 
 
-local ui_base = game.CoreGui.ProBaconUI.ui_base
+local ui_base = game.CoreGui.ProBaconUI.ui.ui_base
 local ui_base_gradient = ui_base.UIGradient
-local tab_holder = game.CoreGui.ProBaconUI.ui_base.tab_holder
-local content_holder = game.CoreGui.ProBaconUI.ui_base.content_holder
-local ui_title = game.CoreGui.ProBaconUI.ui_base.title_bar.ui_title
-local close = game.CoreGui.ProBaconUI.ui_base.title_bar.close
+local tab_holder = game.CoreGui.ProBaconUI.ui.ui_base.tab_holder
+local content_holder = game.CoreGui.ProBaconUI.ui.ui_base.content_holder
+local ui_title = game.CoreGui.ProBaconUI.ui.ui_base.title_bar.ui_title
+local close = game.CoreGui.ProBaconUI.ui.ui_base.title_bar.close
 
 getgenv().background_gradient_color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(9, 48, 40)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(35, 122, 87))}
 
