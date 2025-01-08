@@ -170,6 +170,13 @@ function Tabs:CreateTab(name, selectedAsCurrTab)
     content_holder.Position = UDim2.new(1, -6, 0, 29)
     content_holder.Size = UDim2.new(0, 357, 0, 249)
     content_holder.ScrollBarThickness = 3
+    local function updatecanvasize()
+        local canvastween = game:GetService("TweenService"):Create(content_holder, TweenInfo.new(0.15, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {CanvasSize = UDim2.new(0, 0, 0, content_holder.UIListLayout.AbsoluteContentSize.Y+1)})
+        canvastween:Play()
+        canvastween.Completed:Wait()
+    end
+    content_holder.ChildAdded:Connect(updatecanvasize)
+
 
     local tab = Instance.new("TextLabel", tab_holder)
     Instance.new("UICorner", tab)
@@ -184,7 +191,7 @@ function Tabs:CreateTab(name, selectedAsCurrTab)
     tab.TextSize = 14.000
     table.insert(Tabs, name)
     print(#Tabs)
-
+    
     local TabFunctions = {}
     function TabFunctions:UpdateTab(tab_instance, name)
         if table.find(Tabs, tab_instance.Name) then
@@ -638,11 +645,14 @@ slider_input.TextXAlignment = Enum.TextXAlignment.Right
 
 local ui_base = game.CoreGui.ProBaconUI.ui.ui_base
 local ui_base_gradient = ui_base.UIGradient
-local tab_holder = game.CoreGui.ProBaconUI.ui.ui_base.tab_holder
-local content_holder = game.CoreGui.ProBaconUI.ui.ui_base.content_holder
 local ui_title = game.CoreGui.ProBaconUI.ui.ui_base.title_bar.ui_title
 local close = game.CoreGui.ProBaconUI.ui.ui_base.title_bar.close
-
+local function updatetabcanvas()
+    local canvastween = game:GetService("TweenService"):Create(tab_holder, TweenInfo.new(0.15, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {CanvasSize = UDim2.new(0, 0, 0, tab_holder.UIListLayout.AbsoluteContentSize.Y+1)})
+    canvastween:Play()
+    canvastween.Completed:Wait()
+end
+tab_holder.ChildAdded:Connect(updatetabcanvas)
 getgenv().background_gradient_color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(9, 48, 40)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(35, 122, 87))}
 
 ui_base.Size = UDim2.new(0,0,0,0)
@@ -657,24 +667,12 @@ function toggle_ui(state)
 	tween:Play()
 	tween.Completed:Wait()
 end
-function updatecanvasize()
-	local canvastween1 = game:GetService("TweenService"):Create(tab_holder, TweenInfo.new(0.15, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {CanvasSize = UDim2.new(0, 0, 0, tab_holder.UIListLayout.AbsoluteContentSize.Y+1)})
-	local canvastween2 = game:GetService("TweenService"):Create(content_holder, TweenInfo.new(0.15, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {CanvasSize = UDim2.new(0, 0, 0, content_holder.UIListLayout.AbsoluteContentSize.Y+1)})
-	canvastween1:Play()
-	canvastween2:Play()
-	repeat
-		task.wait(0.01)
-	until canvastween1.Completed and canvastween2.Completed
-end
 
 task.wait(3)
 toggle_ui(true)
-updatecanvasize()
 
 
 local ui_background_rotation = game:GetService("RunService").Stepped:Connect(function()
 	ui_base_gradient.Color = getgenv().background_gradient_color
 	ui_base_gradient.Rotation = ui_base_gradient.Rotation + 1
 end)
-tab_holder.ChildAdded:Connect(updatecanvasize)
-content_holder.ChildAdded:Connect(updatecanvasize)
