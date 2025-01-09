@@ -184,21 +184,24 @@ function ProBacon.CreateGui(title)
 
     title_bar.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            local lastmousepos = input.Position
-            local lastuipos = ui.AbsolutePosition
             local mouse = game.Players.LocalPlayer:GetMouse()
+            local lastmousepos = Vector2.new(mouse.X, mouse.Y)
+            local lastuipos = ui.AbsolutePosition
             repeat
-                ui.Position = UDim2.new(0, lastuipos.X+(input.Position.X - lastmousepos.X), 0, lastuipos.Y+(input.Position.Y - lastmousepos.Y))
+                ui.Position = UDim2.new(0, mouse.X+(lastmousepos.X - input.Position.X), 0, mouse.Y+(lastmousepos.Y - input.Position.Y))
                 wait()
             until title_bar.InputEnded:Connect(function(endedinput) return endedinput.UserInputType == Enum.UserInputType.MouseButton1 end)
-        elseif input.UserInputType == Enum.UserInputType.Touch then
+
+
+
+        --[[elseif input.UserInputType == Enum.UserInputType.Touch then
             local lastmousepos = input.Position
             local lastuipos = ui.AbsolutePosition
             local mouse = game.Players.LocalPlayer:GetMouse()
             repeat
                 ui.Position = UDim2.new(0, lastuipos.X+(input.Position.X - lastmousepos.X), 0, lastuipos.Y+(input.Position.Y - lastmousepos.Y))
                 wait()
-            until game:GetService("UserInputService").TouchEnded:Connect()
+            until game:GetService("UserInputService").TouchEnded:Connect()]]
         end
     end)
 
