@@ -47,7 +47,6 @@ getgenv().ui_background_color_scheme = {
 
 
 function ProBacon.CreateGui(title, background_color_template)
-    --[[
     local findcolorsequencesbyname = function(colorscheme)
         local colorsequences = {}
         for _, v in pairs(getgenv().ui_background_color_scheme[colorscheme]:GetChildren()) do
@@ -55,7 +54,6 @@ function ProBacon.CreateGui(title, background_color_template)
         end
         return colorsequences
     end
-    ]]
     title = title or "Pro Bacon Hub"
     local ProBaconUI = Instance.new("ScreenGui", game.CoreGui)
     local ui = Instance.new("Frame", ProBaconUI)
@@ -89,6 +87,7 @@ function ProBacon.CreateGui(title, background_color_template)
     ui_base.Position = UDim2.new(0.5, 0, 0.5, -15)
     ui_base.Size = UDim2.new(0, 475, 0, 285)
 
+    background_color_template = background_color_template or "Under the Lake"
     UIGradient.Color = findcolorsequencesbyname(background_color_template)
 
     title_bar.Name = "title_bar"
