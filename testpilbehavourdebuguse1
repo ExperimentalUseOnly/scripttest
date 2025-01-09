@@ -214,6 +214,7 @@ function ProBacon.CreateGui(title, background_color_template)
     local ui_expanded = true
     local ui_pill = false
     local setpill = function(state)
+        print('setpill')
     	local time = 0.25
     	if state then
     		ui_base.title_bar.ui_title.TextSize = 20
@@ -243,6 +244,7 @@ function ProBacon.CreateGui(title, background_color_template)
     	end
     end
     local setdot = function(state, time)
+        print('setdot')
     	time = time or 0.5
     	state = not state
     	local transparency
@@ -323,7 +325,7 @@ function ProBacon.CreateGui(title, background_color_template)
                     ui.Position = UDim2.new(0, mouse.X-ui_to_mouse_offset.X, 0, mouse.Y-ui_to_mouse_offset.Y)
                     wait()
                 until not ui_dragging
-                if os.time() - input_begine_time <= 0.3 and not ui_expanded then
+                if os.time() - input_begine_time <= 0.1 and not ui_expanded then
                     uibaseinput("pilltouch")
                 end
             end
