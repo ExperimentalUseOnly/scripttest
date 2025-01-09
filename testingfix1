@@ -275,7 +275,7 @@ function ProBacon.CreateGui(title)
             function Contents:CreateLabel(content)
                 local LabelFunctions = {}
                 content = content or "Label"
-                local label = Instance.new("TextLabel")
+                local label = Instance.new("TextLabel", content_holder)
                 Instance.new("UICorner", label)
                 label.Name = "label"
                 label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
