@@ -49,7 +49,7 @@ getgenv().ui_background_color_scheme = {
 function ProBacon.CreateGui(title, background_color_template)
     local findcolorsequencesbyname = function(colorscheme)
         local colorsequences = {}
-        for _, v in pairs(getgenv().ui_background_color_scheme[colorscheme]:GetChildren()) do
+        for _, v in pairs(getgenv().ui_background_color_scheme[colorscheme]) do
             table.insert(colorsequences, v)
         end
         return colorsequences
