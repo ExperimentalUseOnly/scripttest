@@ -47,6 +47,7 @@ getgenv().ui_background_color_scheme = {
 
 
 function ProBacon.CreateGui(title, background_color_template)
+    --[[
     local findcolorsequencesbyname = function(colorscheme)
         local colorsequences = {}
         for _, v in pairs(getgenv().ui_background_color_scheme[colorscheme]:GetChildren()) do
@@ -54,6 +55,7 @@ function ProBacon.CreateGui(title, background_color_template)
         end
         return colorsequences
     end
+    ]]
     title = title or "Pro Bacon Hub"
     local ProBaconUI = Instance.new("ScreenGui", game.CoreGui)
     local ui = Instance.new("Frame", ProBaconUI)
