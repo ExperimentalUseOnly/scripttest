@@ -46,7 +46,8 @@ getgenv().ui_background_color_scheme = {
 
 
 
-function ProBacon.CreateGui()
+function ProBacon.CreateGui(title)
+    title = title or "Pro Bacon Hub"
     local ProBaconUI = Instance.new("ScreenGui", game.CoreGui)
     local ui = Instance.new("Frame", ProBaconUI)
     local ui_base = Instance.new("Frame", ui)
@@ -109,7 +110,7 @@ function ProBacon.CreateGui()
     ui_title.Position = UDim2.new(0, 7, 0.5, 0)
     ui_title.Size = UDim2.new(0.5, 0, 0, 20)
     ui_title.Font = Enum.Font.SourceSans
-    ui_title.Text = "Pro Bacon Hub"
+    ui_title.Text = title
     ui_title.TextColor3 = Color3.fromRGB(255, 255, 255)
     ui_title.TextSize = 15.000
     ui_title.TextXAlignment = Enum.TextXAlignment.Left
@@ -234,10 +235,10 @@ function ProBacon.CreateGui()
         tab.MouseButton1Click:Connect(function()
             updatecanvasize()
             content_holder.Visible = true
-            game:GetService("TweenService"):Create(tab, TweenInfo(0.15), {BackgroundTransparency = 0.7}):Play()
+            game:GetService("TweenService"):Create(tab, TweenInfo(0.15, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {BackgroundTransparency = 0.7}):Play()
             for _, v in ipairs(tab_holder:GetChildren()) do
                 if v ~= tab then
-                    game:GetService("TweenService"):Create(tab, TweenInfo(0.15), {BackgroundTransparency = 1}):Play()
+                    game:GetService("TweenService"):Create(tab, TweenInfo(0.15, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {BackgroundTransparency = 1}):Play()
                 end
             end
         end)
