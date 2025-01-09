@@ -254,6 +254,7 @@ function ProBacon.CreateGui(title, background_color_template)
     	ui_base.tab_holder.Visible = state
     	for _,v in pairs(ui_base:GetChildren()) do
     		if v.Name == "content_holder" then
+                v.Visible = state
                 if state and v:FindFirstChild("isThisContent").Value then
                     v.Visible = state
                 end
