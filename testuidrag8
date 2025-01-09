@@ -181,30 +181,30 @@ function ProBacon.CreateGui(title)
     	ui_base_gradient.Rotation = ui_base_gradient.Rotation + 1
     end)
 
-
-    title_bar.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            local mouse = game.Players.LocalPlayer:GetMouse()
-            local lastmousepos = Vector2.new(mouse.X, mouse.Y)
-            local lastuipos = ui.AbsolutePosition
-            repeat
-                ui.Position = UDim2.new(0, mouse.X+(lastmousepos.X - lastuipos.X), 0, mouse.Y+(lastmousepos.Y - lastuipos.Y))
-                wait()
-            until title_bar.InputEnded:Connect(function(endedinput) return endedinput.UserInputType == Enum.UserInputType.MouseButton1 end)
-
-
-
-        --[[elseif input.UserInputType == Enum.UserInputType.Touch then
-            local lastmousepos = input.Position
-            local lastuipos = ui.AbsolutePosition
-            local mouse = game.Players.LocalPlayer:GetMouse()
-            repeat
-                ui.Position = UDim2.new(0, lastuipos.X+(input.Position.X - lastmousepos.X), 0, lastuipos.Y+(input.Position.Y - lastmousepos.Y))
-                wait()
-            until game:GetService("UserInputService").TouchEnded:Connect()]]
+    local ui_dragging = false
+    task.spawn(function()
+        while wait() do
+            if ui_dragging then
+                local mouse = game.Players.LocalPlayer:GetMouse()
+                local lastmousepos = Vector2.new(mouse.X, mouse.Y)
+                local lastuipos = ui.AbsolutePosition
+                repeat
+                    ui.Position = UDim2.new(0, mouse.X-(lastmousepos.X - lastuipos.X), 0, mouse.Y-(lastmousepos.Y - lastuipos.Y))
+                    wait()
+                until not ui_dragging
+            end
         end
     end)
-
+    title_bar.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.MouseButton1  then
+            ui_dragging = true
+        end
+    end)
+    title_bar.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.MouseButton1  then
+            ui_dragging = false
+        end
+    end)
     close.MouseButton1Click:Connect(function()
         ProBacon:toggle_ui(false)
         ProBaconUI:Destroy()
