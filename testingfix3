@@ -238,7 +238,7 @@ function ProBacon.CreateGui(title)
             game:GetService("TweenService"):Create(tab,TweenInfo.new(0.15, Enum.EasingStyle.Linear, Enum.EasingDirection.In),{BackgroundTransparency = 0.7}):Play()
             for _, v in ipairs(tab_holder:GetChildren()) do
                 if v ~= tab then
-                    game:GetService("TweenService"):Create(tab, TweenInfo(0.15, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {BackgroundTransparency = 1}):Play()
+                    game:GetService("TweenService"):Create(tab, TweenInfo.new(0.15, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {BackgroundTransparency = 1}):Play()
                 end
             end
         end)
