@@ -226,7 +226,6 @@ function ProBacon.CreateGui(title, background_color_template)
     		    ui_base.title_bar.close.Size = UDim2.new(0,20,0,20)
     		    ui_base.title_bar.close.Position = UDim2.new(1, -10, 0.5, 0)
     		    ui_base.title_bar.Size = UDim2.new(0, 200, 0, 75)
-    		    --ui_base.title_bar.close.ImageTransparency = 0
     		    local tween = game:GetService("TweenService"):Create(ui_base.title_bar.ui_title, TweenInfo.new(time, Enum.EasingStyle.Cubic), {TextTransparency = 0})
     		    tween:Play()
     		    game:GetService("TweenService"):Create(ui_base.title_bar.close, TweenInfo.new(time, Enum.EasingStyle.Cubic), {ImageTransparency = 0}):Play()
@@ -255,7 +254,7 @@ function ProBacon.CreateGui(title, background_color_template)
     end
     local setdot = function(state, time)
         if state then
-    	    ui_base.title_bar.Size = UDim2.new(0.5,0,0,24)
+    	    ui_base.title_bar.Size = UDim2.new(0,0,0,0)
         else
             ui_base.title_bar.Size = UDim2.new(1,0,0,24)
         end
