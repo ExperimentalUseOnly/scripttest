@@ -254,7 +254,9 @@ function ProBacon.CreateGui(title, background_color_template)
     	ui_base.tab_holder.Visible = state
     	for _,v in pairs(ui_base:GetChildren()) do
     		if v.Name == "content_holder" then
-    			v.Visible = state
+                if state and v:FindFirstChild("isThisContent").Value then
+                    v.Visible = state
+                end
     		end
     	end
     	game:GetService("TweenService"):Create(ui_base.title_bar.ui_title, TweenInfo.new(time/5, Enum.EasingStyle.Cubic), {TextTransparency = transparency}):Play()
@@ -319,7 +321,7 @@ function ProBacon.CreateGui(title, background_color_template)
                     ui.Position = UDim2.new(0, mouse.X-ui_to_mouse_offset.X, 0, mouse.Y-ui_to_mouse_offset.Y)
                     wait()
                 until not ui_dragging
-                if os.time() - input_begine_time <= 0.3 and ui_pill then
+                if os.time() - input_begine_time <= 0.3 and not ui_expanded then
                     uibaseinput("pilltouch")
                 end
             end
@@ -353,7 +355,8 @@ function ProBacon.CreateGui(title, background_color_template)
         content_holder.Position = UDim2.new(1, -6, 0, 29)
         content_holder.Size = UDim2.new(0, 357, 0, 249)
         content_holder.ScrollBarThickness = 3
-
+        local currcontentvar = Instance.new("BoolValue", content_holder)
+        currcontentvar.Name = "isThisContent"
 
         local tab = Instance.new("TextButton", tab_holder)
         Instance.new("UICorner", tab)
@@ -392,8 +395,10 @@ function ProBacon.CreateGui(title, background_color_template)
                 for _, v in ipairs(ui_base:GetChildren()) do
                     if v == content_holder then
                         v.Visible = true
+                        currcontentvar.Value = true
                     elseif v.Name == "content_holder" then
                         v.Visible = false
+                        currcontentvar.Value = false
                     end
                 end
             end)
