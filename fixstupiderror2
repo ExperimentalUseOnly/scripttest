@@ -51,6 +51,8 @@ function ProBacon.CreateGui(title)
     local ProBaconUI = Instance.new("ScreenGui", game.CoreGui)
     local ui = Instance.new("Frame", ProBaconUI)
     local ui_base = Instance.new("Frame", ui)
+    local ui_base_corner = Instance.new("UICorner", ui_base)
+    ui_base_corner.CornerRadius = UDim.new(0,0)
     local UIGradient = Instance.new("UIGradient", ui_base)
     local title_bar = Instance.new("Frame", ui_base)
     local close = Instance.new("ImageButton", title_bar)
@@ -100,6 +102,7 @@ function ProBacon.CreateGui(title)
     close.Image = "rbxassetid://3926305904"
     close.ImageRectOffset = Vector2.new(284, 4)
     close.ImageRectSize = Vector2.new(24, 24)
+
 
     ui_title.Name = "ui_title"
     ui_title.AnchorPoint = Vector2.new(0, 0.5)
@@ -178,7 +181,37 @@ function ProBacon.CreateGui(title)
     	ui_base_gradient.Rotation = ui_base_gradient.Rotation + 1
     end)
 
+
+    title_bar.InputBegan:Connect(function(input)
+
+        if input.UserInputType == Enum.UserInputType.Touch then
+            local lastmousepos = input.Position
+            local lastuipos = ui.AbsolutePosition
+            local mouse = game.Players.LocalPlayer:GetMouse()
+            repeat
+                ui.Position = UDim2.new(0, lastuipos.X+(mouse.X-lastuipos.X), 0, lastuipos.Y+(mouse.Y-lastuipos.Y))
+                wait()
+            until game:GetService("UserInputService").TouchEnded:Connect()
+        end
+        if input.UserInputType == Enum.UserInputType.Touch then
+            
+        end
+    end)
+
+    close.MouseButton1Click:Connect(function()
+        ProBacon:toggle_ui(false)
+        ProBaconUI:Destroy()
+    end)
+    minimize.MouseButton1Click:Connect(function()
+        game:GetService("TweenService"):Create(ui_base_corner, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {CornerRadius = UDim.new(0,10)})
+        game:GetService("TweenService"):Create(ui_base, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {Size = UDim2.new(0, 100, 0, 100)})
+    end)
     
+
+
+
+
+
     local Tabs = {}
 
     function Tabs:CreateTab(name, selectedAsCurrTab)
@@ -237,9 +270,9 @@ function ProBacon.CreateGui(title)
             content_holder.Visible = true
             for _, v in ipairs(tab_holder:GetChildren()) do
                 if v == tab then
-                    game:GetService("TweenService"):Create(v,TweenInfo.new(0.15, Enum.EasingStyle.Linear, Enum.EasingDirection.In),{BackgroundTransparency = 0.7}):Play()
+                    game:GetService("TweenService"):Create(v,TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.In),{BackgroundTransparency = 0.7}):Play()
                 elseif v.Name == "TextButton" then
-                    game:GetService("TweenService"):Create(v, TweenInfo.new(0.15, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {BackgroundTransparency = 1}):Play()
+                    game:GetService("TweenService"):Create(v, TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {BackgroundTransparency = 1}):Play()
                 end
             end
             for _, v in ipairs(ui_base:GetChildren()) do
