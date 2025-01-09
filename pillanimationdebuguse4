@@ -216,7 +216,6 @@ function ProBacon.CreateGui(title, background_color_template)
     local ui_expanded = true
     local ui_pill = false
     local setpill = function(state)
-        print('setpill')
     	local time = 0.25
     	if state then
             local topill = game:GetService("TweenService"):Create(ui_base, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 200, 0, 75)})
@@ -255,7 +254,6 @@ function ProBacon.CreateGui(title, background_color_template)
     	end
     end
     local setdot = function(state, time)
-        print('setdot')
     	time = time or 0.5
     	state = not state
     	local transparency
@@ -280,7 +278,7 @@ function ProBacon.CreateGui(title, background_color_template)
         if state then
     	    ui_base.title_bar.Size = UDim2.new(1,0,0,24)
         else
-            ui_base.title_bar.Size = UDim2.new(0.5,0,0,24)
+            ui_base.title_bar.Size = UDim2.new(0,0,0,0)
         end
     end
     ui_base.title_bar.minimize.MouseButton1Click:Connect(function()
