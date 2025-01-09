@@ -215,7 +215,6 @@ function ProBacon.CreateGui(title, background_color_template)
     local ui_pill = false
     local setpill = function(state)
         print('setpill')
-        task.wait(3)
     	local time = 0.25
     	if state then
             local topill = game:GetService("TweenService"):Create(ui_base, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 200, 0, 75)})
