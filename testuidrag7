@@ -188,7 +188,7 @@ function ProBacon.CreateGui(title)
             local lastmousepos = Vector2.new(mouse.X, mouse.Y)
             local lastuipos = ui.AbsolutePosition
             repeat
-                ui.Position = UDim2.new(0, mouse.X+(lastmousepos.X - input.Position.X), 0, mouse.Y+(lastmousepos.Y - input.Position.Y))
+                ui.Position = UDim2.new(0, mouse.X+(lastmousepos.X - lastuipos.X), 0, mouse.Y+(lastmousepos.Y - lastuipos.Y))
                 wait()
             until title_bar.InputEnded:Connect(function(endedinput) return endedinput.UserInputType == Enum.UserInputType.MouseButton1 end)
 
