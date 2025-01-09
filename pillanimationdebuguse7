@@ -253,11 +253,6 @@ function ProBacon.CreateGui(title, background_color_template)
     	end
     end
     local setdot = function(state, time)
-        if state then
-    	    ui_base.title_bar.Size = UDim2.new(0,0,0,0)
-        else
-            ui_base.title_bar.Size = UDim2.new(1,0,0,24)
-        end
     	time = time or 0.5
     	state = not state
     	local transparency
@@ -279,6 +274,7 @@ function ProBacon.CreateGui(title, background_color_template)
     	game:GetService("TweenService"):Create(ui_base.title_bar.ui_title, TweenInfo.new(time/5, Enum.EasingStyle.Cubic), {TextTransparency = transparency}):Play()
     	game:GetService("TweenService"):Create(ui_base.title_bar.close, TweenInfo.new(time/5, Enum.EasingStyle.Cubic), {ImageTransparency = transparency}):Play()
     	game:GetService("TweenService"):Create(ui_base.title_bar.minimize, TweenInfo.new(time/5, Enum.EasingStyle.Cubic), {ImageTransparency = transparency}):Play()
+        ui_base.title_bar.Size = UDim2.new(1,0,0,24)
     end
     ui_base.title_bar.minimize.MouseButton1Click:Connect(function()
     	if ui_expanded then
@@ -289,7 +285,9 @@ function ProBacon.CreateGui(title, background_color_template)
     		game:GetService("TweenService"):Create(ui_base, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 75, 0, 75)}):Play()
     		game:GetService("TweenService"):Create(ui_base, TweenInfo.new(0.5, Enum.EasingStyle.Cubic), {Position = UDim2.new(0.5, 0, 0, 10)}):Play()
     		game:GetService("TweenService"):Create(ui_base, TweenInfo.new(0.5, Enum.EasingStyle.Cubic), {AnchorPoint = Vector2.new(0.5,0)}):Play()
-    		task.wait(0.25)
+            task.wait(0.1)
+            ui_base.title_bar.Size = UDim2.new(0.5,0,0,24)
+    		task.wait(0.15)
     		if not ui_expanded then
     			setdot(true)
     		end
