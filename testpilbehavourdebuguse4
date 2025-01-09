@@ -272,7 +272,7 @@ function ProBacon.CreateGui(title, background_color_template)
     	game:GetService("TweenService"):Create(ui_base.title_bar.ui_title, TweenInfo.new(time/5, Enum.EasingStyle.Cubic), {TextTransparency = transparency}):Play()
     	game:GetService("TweenService"):Create(ui_base.title_bar.close, TweenInfo.new(time/5, Enum.EasingStyle.Cubic), {ImageTransparency = transparency}):Play()
     	game:GetService("TweenService"):Create(ui_base.title_bar.minimize, TweenInfo.new(time/5, Enum.EasingStyle.Cubic), {ImageTransparency = transparency}):Play()
-    	ui_base.title_bar.Size = UDim2.new(1,0,0,24)
+    	ui_base.title_bar.Size = UDim2.new(1,0,1,0) --UDim2.new(1,0,0,24)
     end
     ui_base.title_bar.minimize.MouseButton1Click:Connect(function()
     	if ui_expanded then
