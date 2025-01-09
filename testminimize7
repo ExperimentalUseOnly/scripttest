@@ -185,7 +185,7 @@ function ProBacon.CreateGui(title, background_color_template)
     	tween.Completed:Wait()
     end
     local ui_background_rotation = game:GetService("RunService").Stepped:Connect(function()
-    	ui_base_gradient.Color = findcolorsequencesbyname(background_color_template)
+    	ui_base_gradient.Color = ColorSequence.new{unpack(findcolorsequencesbyname(background_color_template))}
     	ui_base_gradient.Rotation = ui_base_gradient.Rotation + 1
     end)
 
