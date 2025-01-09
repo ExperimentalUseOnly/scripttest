@@ -400,7 +400,7 @@ function ProBacon.CreateGui(title)
                 content.Font = Enum.Font.SourceSans
                 content.Text = button_content
                 if btn_inactive then
-                    content.TextColor3 = Color3.fromRGB(150, 150, 150)
+                    content.TextColor3 = Color3.fromRGB(255, 100, 100)
                 else
                     content.TextColor3 = Color3.fromRGB(255, 255, 255)
                 end
