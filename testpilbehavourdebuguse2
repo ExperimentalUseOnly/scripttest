@@ -215,6 +215,7 @@ function ProBacon.CreateGui(title, background_color_template)
     local ui_pill = false
     local setpill = function(state)
         print('setpill')
+        task.wait(3)
     	local time = 0.25
     	if state then
     		ui_base.title_bar.ui_title.TextSize = 20
