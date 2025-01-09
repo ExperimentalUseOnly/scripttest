@@ -218,6 +218,9 @@ function ProBacon.CreateGui(title, background_color_template)
         task.wait(3)
     	local time = 0.25
     	if state then
+            local topill = game:GetService("TweenService"):Create(ui_base, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 200, 0, 75)})
+    		topill:Play()
+    		topill.Completed:Wait()
     		ui_base.title_bar.ui_title.TextSize = 20
     		ui_base.title_bar.close.Size = UDim2.new(0,20,0,20)
     		ui_base.title_bar.close.Position = UDim2.new(1, -10, 0.5, 0)
@@ -242,6 +245,8 @@ function ProBacon.CreateGui(title, background_color_template)
     		ui_base.title_bar.close.Position = UDim2.new(1, -2, 0.5, 0)
     		ui_base.title_bar.ui_title.TextSize = 15
     		ui_base.title_bar.close.Size = UDim2.new(0,20,0,20)
+            game:GetService("TweenService"):Create(ui_base, TweenInfo.new(0.5, Enum.EasingStyle.Circular, Enum.EasingDirection.Out), {Size = UDim2.new(0, 75, 0, 75)}):Play()
+    		task.wait(0.35)
     	end
     end
     local setdot = function(state, time)
@@ -285,9 +290,6 @@ function ProBacon.CreateGui(title, background_color_template)
     		change_ui_shape.Completed:Wait()
     		task.wait(0.5)
     		if not ui_expanded then
-    			local topill = game:GetService("TweenService"):Create(ui_base, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 200, 0, 75)})
-    			topill:Play()
-    			topill.Completed:Wait()
     			if not ui_expanded then
     				ui_pill = true
     				setpill(true)
@@ -301,8 +303,6 @@ function ProBacon.CreateGui(title, background_color_template)
     			ui_expanded = true
     			if ui_pill then
     				setpill(false)
-    				game:GetService("TweenService"):Create(ui_base, TweenInfo.new(0.5, Enum.EasingStyle.Circular, Enum.EasingDirection.Out), {Size = UDim2.new(0, 75, 0, 75)}):Play()
-    				task.wait(0.35)
     			end
     			if ui_expanded then
     				ui_pill = false
