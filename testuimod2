@@ -294,8 +294,6 @@ function ProBacon.CreateGui(title)
         end
         if selectedAsCurrTab then
             switch_to_this_tab()
-        else
-            content_holder.Visible = false
         end
         tab.MouseButton1Click:Connect(switch_to_this_tab)
         local TabFunctions = {}
