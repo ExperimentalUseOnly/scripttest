@@ -239,13 +239,6 @@ function ProBacon.CreateGui(title)
         content_holder.Position = UDim2.new(1, -6, 0, 29)
         content_holder.Size = UDim2.new(0, 357, 0, 249)
         content_holder.ScrollBarThickness = 3
-        local function updatecanvasize()
-            local canvastween = game:GetService("TweenService"):Create(content_holder, TweenInfo.new(0.15, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {CanvasSize = UDim2.new(0, 0, 0, content_holder.UIListLayout.AbsoluteContentSize.Y+1)})
-            canvastween:Play()
-            canvastween.Completed:Wait()
-        end
-        updatecanvasize()
-        content_holder.ChildAdded:Connect(updatecanvasize)
 
 
         local tab = Instance.new("TextButton", tab_holder)
@@ -262,6 +255,12 @@ function ProBacon.CreateGui(title)
         tab.TextSize = 14.000
         table.insert(Tabs, name)
 
+        local function updatecanvasize()
+            local canvastween = game:GetService("TweenService"):Create(content_holder, TweenInfo.new(0.15, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {CanvasSize = UDim2.new(0, 0, 0, content_holder.UIListLayout.AbsoluteContentSize.Y+1)})
+            canvastween:Play()
+            canvastween.Completed:Wait()
+        end
+        content_holder.ChildAdded:Connect(updatecanvasize)
         local switch_to_this_tab = function()
             task.spawn(function()
                 updatecanvasize()
