@@ -189,7 +189,7 @@ function ProBacon.CreateGui(title)
                 local lastmousepos = Vector2.new(mouse.X, mouse.Y)
                 local lastuipos = ui.AbsolutePosition
                 repeat
-                    ui.Position = UDim2.new(0, (mouse.X-(lastmousepos.X - lastuipos.X))-130.5, 0, mouse.Y-(lastmousepos.Y - lastuipos.Y))
+                    ui.Position = UDim2.new(0, (mouse.X-(lastmousepos.X - lastuipos.X)), 0, mouse.Y-(lastmousepos.Y - lastuipos.Y)+130.5)
                     wait()
                 until not ui_dragging
             end
