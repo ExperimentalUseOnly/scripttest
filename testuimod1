@@ -239,7 +239,6 @@ function ProBacon.CreateGui(title)
         content_holder.Position = UDim2.new(1, -6, 0, 29)
         content_holder.Size = UDim2.new(0, 357, 0, 249)
         content_holder.ScrollBarThickness = 3
-        
         local function updatecanvasize()
             local canvastween = game:GetService("TweenService"):Create(content_holder, TweenInfo.new(0.15, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {CanvasSize = UDim2.new(0, 0, 0, content_holder.UIListLayout.AbsoluteContentSize.Y+1)})
             canvastween:Play()
@@ -262,33 +261,43 @@ function ProBacon.CreateGui(title)
         tab.TextColor3 = Color3.fromRGB(255, 255, 255)
         tab.TextSize = 14.000
         table.insert(Tabs, name)
+
+        local switch_to_this_tab = function()
+            task.spawn(function()
+                updatecanvasize()
+            end)
+            task.spawn(function()
+                for _, v in ipairs(tab_holder:GetChildren()) do
+                    if v == tab then
+                        game:GetService("TweenService"):Create(v,TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.In),{BackgroundTransparency = 0.7}):Play()
+                    elseif v.Name == "TextButton" then
+                        game:GetService("TweenService"):Create(v, TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {BackgroundTransparency = 1}):Play()
+                    end
+                end
+            end)
+            task.spawn(function()
+                for _, v in ipairs(ui_base:GetChildren()) do
+                    if v == content_holder then
+                        v.Visible = true
+                    elseif v.Name == "content_holder" then
+                        v.Visible = false
+                    end
+                end
+            end)
+        end
+
         if #Tabs == 1 then
-            content_holder.Visible = true
-            tab.BackgroundTransparency = 0.7
-            updatecanvasize()
+            switch_to_this_tab()
         else
             content_holder.Visible = false
             tab.BackgroundTransparency = 1
         end
-        
-        tab.MouseButton1Click:Connect(function()
-            updatecanvasize()
-            content_holder.Visible = true
-            for _, v in ipairs(tab_holder:GetChildren()) do
-                if v == tab then
-                    game:GetService("TweenService"):Create(v,TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.In),{BackgroundTransparency = 0.7}):Play()
-                elseif v.Name == "TextButton" then
-                    game:GetService("TweenService"):Create(v, TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {BackgroundTransparency = 1}):Play()
-                end
-            end
-            for _, v in ipairs(ui_base:GetChildren()) do
-                if v == content_holder then
-                    v.Visible = true
-                elseif v.Name == "content_holder" then
-                    v.Visible = false
-                end
-            end
-        end)
+        if selectedAsCurrTab then
+            switch_to_this_tab()
+        else
+            content_holder.Visible = false
+        end
+        tab.MouseButton1Click:Connect(switch_to_this_tab)
         local TabFunctions = {}
         function TabFunctions:UpdateTab(tab_instance, name)
             if table.find(Tabs, tab_instance.Name) then
