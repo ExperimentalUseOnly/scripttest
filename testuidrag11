@@ -186,10 +186,9 @@ function ProBacon.CreateGui(title)
         while wait() do
             if ui_dragging then
                 local mouse = game.Players.LocalPlayer:GetMouse()
-                local lastmousepos = Vector2.new(mouse.X, mouse.Y)
-                local lastuipos = ui.AbsolutePosition
+                local ui_to_mouse_offset = Vector2.new(game.Players.LocalPlayer:GetMouse().X - ui.Position.X.Offset, game.Players.LocalPlayer:GetMouse().Y - ui.Position.Y.Offset)
                 repeat
-                    ui.Position = UDim2.new(0, (mouse.X-(lastmousepos.X - lastuipos.X)), 0, mouse.Y-(lastmousepos.Y - lastuipos.Y)+130.5)
+                    ui.Position = UDim2.new(0, mouse.X-ui_to_mouse_offset.X, 0, mouse.Y-ui_to_mouse_offset.Y)
                     wait()
                 until not ui_dragging
             end
