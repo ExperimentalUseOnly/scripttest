@@ -46,7 +46,14 @@ getgenv().ui_background_color_scheme = {
 
 
 
-function ProBacon.CreateGui(title)
+function ProBacon.CreateGui(title, background_color_template)
+    local findcolorsequencesbyname = function(colorscheme)
+        local colorsequences = {}
+        for _, v in pairs(getgenv().ui_background_color_scheme[colorscheme]:GetChildren()) do
+            table.insert(colorsequences, v)
+        end
+        return colorsequences
+    end
     title = title or "Pro Bacon Hub"
     local ProBaconUI = Instance.new("ScreenGui", game.CoreGui)
     local ui = Instance.new("Frame", ProBaconUI)
@@ -80,7 +87,7 @@ function ProBacon.CreateGui(title)
     ui_base.Position = UDim2.new(0.5, 0, 0.5, -15)
     ui_base.Size = UDim2.new(0, 475, 0, 285)
 
-    UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(9, 48, 40)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(35, 122, 87))}
+    UIGradient.Color = findcolorsequencesbyname(background_color_template)
 
     title_bar.Name = "title_bar"
     title_bar.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -164,7 +171,7 @@ function ProBacon.CreateGui(title)
         canvastween.Completed:Wait()
     end
     tab_holder.ChildAdded:Connect(updatetabcanvas)
-    getgenv().background_gradient_color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(9, 48, 40)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(35, 122, 87))}
+
     ui_base.Size = UDim2.new(0,0,0,0)
     function ProBacon:toggle_ui(state)
     	local tween
@@ -177,7 +184,7 @@ function ProBacon.CreateGui(title)
     	tween.Completed:Wait()
     end
     local ui_background_rotation = game:GetService("RunService").Stepped:Connect(function()
-    	ui_base_gradient.Color = getgenv().background_gradient_color
+    	ui_base_gradient.Color = findcolorsequencesbyname(background_color_template)
     	ui_base_gradient.Rotation = ui_base_gradient.Rotation + 1
     end)
 
@@ -213,6 +220,110 @@ function ProBacon.CreateGui(title)
         game:GetService("TweenService"):Create(ui_base, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {Size = UDim2.new(0, 100, 0, 100)})
     end)
     
+    --TEST
+    local ui_base = game.Players.LocalPlayer.PlayerGui.ProBaconUI.ui.ui_base
+    local expanded_ui_pos
+    local ui_expanded = true
+    local ui_pill = false
+    local setpill = function(state)
+    	local time = 0.25
+    	if state then
+    		ui_base.title_bar.ui_title.TextSize = 20
+    		ui_base.title_bar.close.Size = UDim2.new(0,20,0,20)
+    		ui_base.title_bar.close.Position = UDim2.new(1, -10, 0.5, 0)
+    		ui_base.title_bar.Size = UDim2.new(0, 200, 0, 75)
+    		--ui_base.title_bar.close.ImageTransparency = 0
+    		local tween = game:GetService("TweenService"):Create(ui_base.title_bar.ui_title, TweenInfo.new(time, Enum.EasingStyle.Cubic), {TextTransparency = 0})
+    		tween:Play()
+    		game:GetService("TweenService"):Create(ui_base.title_bar.close, TweenInfo.new(time, Enum.EasingStyle.Cubic), {ImageTransparency = 0}):Play()
+    		game:GetService("TweenService"):Create(ui_base.title_bar.ui_title, TweenInfo.new(time, Enum.EasingStyle.Cubic), {TextTransparency = 0}):Play()
+    		game:GetService("TweenService"):Create(ui_base.title_bar, TweenInfo.new(time, Enum.EasingStyle.Cubic), {Size = UDim2.new(0, 200, 0, 75)}):Play()
+    		game:GetService("TweenService"):Create(ui_base.title_bar, TweenInfo.new(time, Enum.EasingStyle.Cubic), {Position = UDim2.new(0.5,0,0.5,0)}):Play()
+    		tween.Completed:Wait()
+    	else
+    		local tween = game:GetService("TweenService"):Create(ui_base.title_bar.ui_title, TweenInfo.new(time, Enum.EasingStyle.Cubic), {TextTransparency = 0})
+    		tween:Play()
+    		game:GetService("TweenService"):Create(ui_base.title_bar.close, TweenInfo.new(time, Enum.EasingStyle.Cubic), {ImageTransparency = 1}):Play()
+    		game:GetService("TweenService"):Create(ui_base.title_bar.ui_title, TweenInfo.new(time, Enum.EasingStyle.Cubic), {TextTransparency = 1}):Play()
+    		game:GetService("TweenService"):Create(ui_base.title_bar, TweenInfo.new(time, Enum.EasingStyle.Cubic), {Size = UDim2.new(1,0,0,24)}):Play()
+    		game:GetService("TweenService"):Create(ui_base.title_bar, TweenInfo.new(time, Enum.EasingStyle.Cubic), {Position = UDim2.new(0.5,0,0,12)}):Play()
+    		tween.Completed:Wait()
+    		ui_base.title_bar.Size = UDim2.new(0, 475, 0, 285)
+    		ui_base.title_bar.close.Position = UDim2.new(1, -2, 0.5, 0)
+    		ui_base.title_bar.ui_title.TextSize = 15
+    		ui_base.title_bar.close.Size = UDim2.new(0,20,0,20)
+    	end
+    end
+    local setdot = function(state, time)
+    	time = time or 0.5
+    	state = not state
+    	local transparency
+    	if state then
+    		transparency = 0
+    	else
+    		transparency = 1
+    	end
+    	ui_base.tab_holder.Visible = state
+    	for _,v in pairs(ui_base:GetChildren()) do
+    		if v.Name == "content_holder" then
+    			v.Visible = state
+    		end
+    	end
+    	game:GetService("TweenService"):Create(ui_base.title_bar.ui_title, TweenInfo.new(time/5, Enum.EasingStyle.Cubic), {TextTransparency = transparency}):Play()
+    	game:GetService("TweenService"):Create(ui_base.title_bar.close, TweenInfo.new(time/5, Enum.EasingStyle.Cubic), {ImageTransparency = transparency}):Play()
+    	game:GetService("TweenService"):Create(ui_base.title_bar.minimize, TweenInfo.new(time/5, Enum.EasingStyle.Cubic), {ImageTransparency = transparency}):Play()
+    	ui_base.title_bar.Size = UDim2.new(1,0,0,24)
+    end
+    ui_base.title_bar.minimize.MouseButton1Click:Connect(function()
+    	if ui_expanded then
+    		expanded_ui_pos = ui_base.Position
+    		ui_expanded = false
+    		local change_ui_shape = game:GetService("TweenService"):Create(ui_base.ui_base_corner, TweenInfo.new(0.5, Enum.EasingStyle.Cubic), {CornerRadius = UDim.new(0.5,0)})
+    		change_ui_shape:Play()
+    		game:GetService("TweenService"):Create(ui_base, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 75, 0, 75)}):Play()
+    		game:GetService("TweenService"):Create(ui_base, TweenInfo.new(0.5, Enum.EasingStyle.Cubic), {Position = UDim2.new(0.5, 0, 0, 10)}):Play()
+    		game:GetService("TweenService"):Create(ui_base, TweenInfo.new(0.5, Enum.EasingStyle.Cubic), {AnchorPoint = Vector2.new(0.5,0)}):Play()
+    		task.wait(0.25)
+    		if not ui_expanded then
+    			setdot(true)
+    		end
+    		change_ui_shape.Completed:Wait()
+    		task.wait(0.5)
+    		if not ui_expanded then
+    			local topill = game:GetService("TweenService"):Create(ui_base, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 200, 0, 75)})
+    			topill:Play()
+    			topill.Completed:Wait()
+    			if not ui_expanded then
+    				ui_pill = true
+    				setpill(true)
+    			end
+    		end
+    	end
+    end)
+    local uibaseinput = function(input)
+    	if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
+    		if not ui_expanded then
+    			ui_expanded = true
+    			if ui_pill then
+    				setpill(false)
+    				game:GetService("TweenService"):Create(ui_base, TweenInfo.new(0.5, Enum.EasingStyle.Circular, Enum.EasingDirection.Out), {Size = UDim2.new(0, 75, 0, 75)}):Play()
+    				task.wait(0.35)
+    			end
+    			if ui_expanded then
+    				ui_pill = false
+    				setdot(false)
+    				game:GetService("TweenService"):Create(ui_base.ui_base_corner, TweenInfo.new(0.5, Enum.EasingStyle.Cubic), {CornerRadius = UDim.new(0,0)}):Play()
+    				game:GetService("TweenService"):Create(ui_base, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 475, 0, 285)}):Play()
+    				game:GetService("TweenService"):Create(ui_base, TweenInfo.new(0.5, Enum.EasingStyle.Cubic), {AnchorPoint = Vector2.new(0.5,0.5)}):Play()
+    				game:GetService("TweenService"):Create(ui_base, TweenInfo.new(0.5, Enum.EasingStyle.Cubic), {Position = expanded_ui_pos}):Play()
+    			end
+    		end
+    	end
+    end
+    ui_base.InputBegan:Connect(uibaseinput)
+
+
+
 
 
 
