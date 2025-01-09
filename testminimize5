@@ -88,7 +88,7 @@ function ProBacon.CreateGui(title, background_color_template)
     ui_base.Size = UDim2.new(0, 475, 0, 285)
 
     background_color_template = background_color_template or "Under the Lake"
-    UIGradient.Color = findcolorsequencesbyname(background_color_template)
+    UIGradient.Color = unpack(findcolorsequencesbyname(background_color_template))
 
     title_bar.Name = "title_bar"
     title_bar.AnchorPoint = Vector2.new(0.5, 0.5)
