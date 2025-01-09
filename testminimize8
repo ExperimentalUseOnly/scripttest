@@ -222,7 +222,6 @@ function ProBacon.CreateGui(title, background_color_template)
     end)
     
     --TEST
-    local ui_base = game.Players.LocalPlayer.PlayerGui.ProBaconUI.ui.ui_base
     local expanded_ui_pos
     local ui_expanded = true
     local ui_pill = false
