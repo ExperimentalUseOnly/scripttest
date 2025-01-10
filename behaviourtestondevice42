@@ -48,7 +48,7 @@ getgenv().ui_background_color_scheme = {
 	},
 }
 
-function ProBacon:EnableDragging(title_bar, ui)
+function ProBacon:DraggingEnabled(title_bar, ui)
     local dragInput, mousePos, framePos, input_begine_time
     title_bar.InputBegan:Connect(function(input)
         local lastmouseloc = game:GetService("UserInputService"):GetMouseLocation()
@@ -63,7 +63,7 @@ function ProBacon:EnableDragging(title_bar, ui)
                     ui_dragging = false
                     local mouseloc = game:GetService("UserInputService"):GetMouseLocation()
                     if (os.clock()-input_begine_time < 0.3) and math.abs(mouseloc.X-lastmouseloc.X)<2 and math.abs(mouseloc.Y-lastmouseloc.Y)<2 then
-                        expand_ui()
+                        pillshortclick = true
                     end
                 end
             end)
@@ -127,7 +127,7 @@ function ProBacon.CreateGui(title, background_color_template)
     background_color_template = background_color_template or "Under the Lake"
     UIGradient.Color = ColorSequence.new{unpack(findcolorsequencesbyname(background_color_template))}
 
-    ProBacon:EnableDragging(title_bar, ui)
+    ProBacon:DraggingEnabled(title_bar, ui)
     title_bar.Name = "title_bar"
     title_bar.AnchorPoint = Vector2.new(0.5, 0.5)
     title_bar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
