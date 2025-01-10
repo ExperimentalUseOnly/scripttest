@@ -47,7 +47,7 @@ getgenv().ui_background_color_scheme = {
 		ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0,0,0))
 	},
 }
-
+local input = game:GetService("UserInputService")
 function ProBacon:DraggingEnabled(title_bar, ui)
     local dragInput, mousePos, framePos, input_begine_time
     title_bar.InputBegan:Connect(function(input)
@@ -74,7 +74,7 @@ function ProBacon:DraggingEnabled(title_bar, ui)
             dragInput = input
         end
     end)
-    game:GetService("UserInputService").InputChanged:Connect(function(input)
+    input.InputChanged:Connect(function(input)
         if input == dragInput and ui_dragging then
             local delta = input.Position - mousePos
             ui.Position  = UDim2.new(framePos.X.Scale, framePos.X.Offset + delta.X, framePos.Y.Scale, framePos.Y.Offset + delta.Y)
