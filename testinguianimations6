@@ -646,6 +646,7 @@ function ProBacon.CreateGui(title, background_color_template)
                         toggle_icon.ImageRectOffset = Vector2.new(628, 420)
                     end
                 end
+                return ToggleFunctions
             end
             return Contents
         end
