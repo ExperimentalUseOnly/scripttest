@@ -192,9 +192,25 @@ function ProBacon.CreateGui(title, background_color_template)
     end)
 
     local ui_dragging = false
+    local dragInput, mousePos, framePos
+    --[[
     title_bar.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch  then
             ui_dragging = true
+        end
+    end)
+    title_bar.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch  then
+            ui_dragging = false
+        end
+    end)
+    ]]
+    title_bar.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            ui_dragging = true
+            mousePos = input.Position
+            framePos = ui.Position
+            
             input.Changed:Connect(function()
                 if input.UserInputState == Enum.UserInputState.End then
                     ui_dragging = false
@@ -202,18 +218,19 @@ function ProBacon.CreateGui(title, background_color_template)
             end)
         end
     end)
+
     title_bar.InputChanged:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
             ui_dragging = input
         end
     end)
-    --[[
-    title_bar.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch  then
-            ui_dragging = false
+
+    game:GetService("UserInputService").InputChanged:Connect(function(input)
+        if input == dragInput and ui_dragging then
+            local delta = input.Position - mousePos
+            ui.Position  = UDim2.new(framePos.X.Scale, framePos.X.Offset + delta.X, framePos.Y.Scale, framePos.Y.Offset + delta.Y)
         end
     end)
-    ]]
     close.MouseButton1Click:Connect(function()
         if close.ImageTransparency ~= 1 then
             ProBacon:toggle_ui(false)
@@ -335,6 +352,7 @@ function ProBacon.CreateGui(title, background_color_template)
     	end
     end
     ui_base.InputBegan:Connect(uibaseinput)
+    --[[
     task.spawn(function()
         while wait() do
             if ui_dragging then
@@ -351,6 +369,7 @@ function ProBacon.CreateGui(title, background_color_template)
             end
         end
     end)
+    ]]
 
 
 
