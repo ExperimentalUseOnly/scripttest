@@ -241,7 +241,7 @@ function ProBacon.CreateGui(title, background_color_template)
             game:GetService("TweenService"):Create(ui_base.title_bar, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(1,0,0,24)}):Play()
     		game:GetService("TweenService"):Create(ui_base.title_bar.close, TweenInfo.new(time, Enum.EasingStyle.Cubic), {ImageTransparency = 1}):Play()
     		game:GetService("TweenService"):Create(ui_base.title_bar.ui_title, TweenInfo.new(time, Enum.EasingStyle.Cubic), {TextTransparency = 1}):Play()
-    		game:GetService("TweenService"):Create(ui_base.title_bar, TweenInfo.new(time, Enum.EasingStyle.Cubic), {Size = UDim2.new(1,0,1,0)}):Play()
+    		game:GetService("TweenService"):Create(ui_base.title_bar, TweenInfo.new(time, Enum.EasingStyle.Cubic), {Size = UDim2.new(1,0,0,0)}):Play()
     		game:GetService("TweenService"):Create(ui_base.title_bar, TweenInfo.new(time, Enum.EasingStyle.Cubic), {Position = UDim2.new(0.5,0,0,12)}):Play()
     		tween.Completed:Wait()
             if not ui_pill then
