@@ -61,7 +61,8 @@ function ProBacon.CreateGui(title, background_color_template)
     local ui_base_corner = Instance.new("UICorner", ui_base)
     ui_base_corner.CornerRadius = UDim.new(0,0)
     local UIGradient = Instance.new("UIGradient", ui_base)
-    local title_bar = Instance.new("Frame", ui_base)
+    local title_bar = Instance.new("TextButton", ui_base)
+    --local title_button = Instance.new("TextButton", title_bar)
     local close = Instance.new("ImageButton", title_bar)
     local ui_title = Instance.new("TextLabel", title_bar)
     local minimize = Instance.new("ImageButton", title_bar)
@@ -98,6 +99,15 @@ function ProBacon.CreateGui(title, background_color_template)
     title_bar.BorderSizePixel = 0
     title_bar.Position = UDim2.new(0.5, 0, 0, 12)
     title_bar.Size = UDim2.new(1, 0, 0, 24)
+    title_bar.TextTransparency = 1
+    title_bar.AutoButtonColor = false
+
+    --[[
+    title_button.AnchorPoint = Vector2.new(0.5,0.5)
+    title_button.Position = UDim2.new(0.5,0,0.5,0)
+    title_button.BackgroundTransparency = 1
+    title_button.AutoButtonColor = false
+    ]]
 
     close.Name = "close"
     close.AnchorPoint = Vector2.new(1, 0.5)
@@ -324,14 +334,14 @@ function ProBacon.CreateGui(title, background_color_template)
     task.spawn(function()
         while wait() do
             if ui_dragging then
-                local input_begine_time = os.time()
+                local input_begine_time = os.clock()
                 local mouse = game.Players.LocalPlayer:GetMouse()
                 local ui_to_mouse_offset = Vector2.new(game.Players.LocalPlayer:GetMouse().X - ui.Position.X.Offset, game.Players.LocalPlayer:GetMouse().Y - ui.Position.Y.Offset)
                 repeat
                     ui.Position = UDim2.new(0, mouse.X-ui_to_mouse_offset.X, 0, mouse.Y-ui_to_mouse_offset.Y)
                     wait()
                 until not ui_dragging
-                if os.time() - input_begine_time <= 0.1 and not ui_expanded then
+                if os.clock() - input_begine_time <= 0.1 and not ui_expanded then
                     uibaseinput("pilltouch")
                 end
             end
