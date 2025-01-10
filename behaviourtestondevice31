@@ -67,7 +67,8 @@ function ProBacon:Dragging(frame, parent)
                     local mouseloc = game:GetService("UserInputService"):GetMouseLocation()
                     warn(os.clock()-input_begine_time)
                     warn(math.abs(mouseloc.X-lastmouseloc.X), math.abs(mouseloc.Y-lastmouseloc.Y))
-                    if (os.clock()-input_begine_time <= 0.15) and math.abs(mouseloc.X-lastmouseloc.X)<2 and math.abs(mouseloc.Y-lastmouseloc.Y)<2 then
+                    if (os.clock()-input_begine_time < 0.3) and math.abs(mouseloc.X-lastmouseloc.X)<2 and math.abs(mouseloc.Y-lastmouseloc.Y)<2 then
+                        print('shortclick on pill')
                         titlebarshortclick = true
                     end
                     inputchange:Disconnect()
@@ -332,33 +333,43 @@ function ProBacon.CreateGui(title, background_color_template)
     		end
     	end
     end)
-    local uibaseinput = function(input)
-    	if (input == "pilltouch" and ui_pilled) or (not ui_pilled and (input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1) and not ui_dragging) then
-    		if not ui_expanded then
-    			ui_expanded = true
-                game:GetService("TweenService"):Create(ui_base.title_bar, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(1,0,0,24)}):Play()
-    			if ui_pill then
-                    ui_pill = false
-    				setpill(false)
-                    ui_pilled = false
-    			end
-    			if ui_expanded then
-    				setdot(false)
-                    game:GetService("TweenService"):Create(ui_base.title_bar.ui_title, TweenInfo.new(0.5, Enum.EasingStyle.Cubic), {TextTransparency = 0}):Play()
-    				game:GetService("TweenService"):Create(ui_base_corner, TweenInfo.new(0.5, Enum.EasingStyle.Cubic), {CornerRadius = UDim.new(0,0)}):Play()
-    				game:GetService("TweenService"):Create(ui_base, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 475, 0, 285)}):Play()
-    				game:GetService("TweenService"):Create(ui_base, TweenInfo.new(0.5, Enum.EasingStyle.Cubic), {AnchorPoint = Vector2.new(0.5,0.5)}):Play()
-    				game:GetService("TweenService"):Create(ui_base, TweenInfo.new(0.5, Enum.EasingStyle.Cubic), {Position = expanded_ui_pos}):Play()
-    			end
+    local expand_ui = function()
+    	if not ui_expanded then
+    		ui_expanded = true
+            game:GetService("TweenService"):Create(ui_base.title_bar, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(1,0,0,24)}):Play()
+    		if ui_pill then
+                ui_pill = false
+    			setpill(false)
+                ui_pilled = false
+    		end
+    		if ui_expanded then
+    			setdot(false)
+                game:GetService("TweenService"):Create(ui_base.title_bar.ui_title, TweenInfo.new(0.5, Enum.EasingStyle.Cubic), {TextTransparency = 0}):Play()
+    			game:GetService("TweenService"):Create(ui_base_corner, TweenInfo.new(0.5, Enum.EasingStyle.Cubic), {CornerRadius = UDim.new(0,0)}):Play()
+    			game:GetService("TweenService"):Create(ui_base, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 475, 0, 285)}):Play()
+    			game:GetService("TweenService"):Create(ui_base, TweenInfo.new(0.5, Enum.EasingStyle.Cubic), {AnchorPoint = Vector2.new(0.5,0.5)}):Play()
+    			game:GetService("TweenService"):Create(ui_base, TweenInfo.new(0.5, Enum.EasingStyle.Cubic), {Position = expanded_ui_pos}):Play()
     		end
     	end
     end
-    ui_base.InputBegan:Connect(uibaseinput)
+    ui_base.InputBegan:Connect(function(input)
+        local lastmouseloc = game:GetService("UserInputService"):GetMouseLocation()
+        local input_begine_time, inputchange
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            input_begine_time = os.clock()
+            inputchange = input.Changed:Connect(function()
+                local mouseloc = game:GetService("UserInputService"):GetMouseLocation()
+                if input.UserInputState == Enum.UserInputState.End and (os.clock()-input_begine_time < 0.3) and math.abs(mouseloc.X-lastmouseloc.X)<2 and math.abs(mouseloc.Y-lastmouseloc.Y)<2 then
+                    expand_ui()
+                end
+            end)
+        end
+    end)
     task.spawn(function()
         while wait() do
             if titlebarshortclick and ui_dragging then
                 titlebarshortclick = false
-                uibaseinput("pilltouch")
+                expand_ui()
             end
         end
     end)
