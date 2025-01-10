@@ -49,8 +49,7 @@ getgenv().ui_background_color_scheme = {
 
 function ProBacon:Dragging(frame, parent)
     parent = parent or frame
-    local dragInput, mousePos, framePos
-    local input_begine_time
+    local dragInput, mousePos, framePos, input_begine_time, inputchange
     frame.InputBegan:Connect(function(input)
         print(input.UserInputType, input.UserInputState)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
@@ -59,13 +58,14 @@ function ProBacon:Dragging(frame, parent)
             mousePos = input.Position
             framePos = parent.Position
             
-            input.Changed:Connect(function()
+            inputchange = input.Changed:Connect(function()
                 print(input.UserInputType, input.UserInputState)
                 if input.UserInputState == Enum.UserInputState.End then
                     ui_dragging = false
                     if (os.clock()-input_begine_time <= 0.3) and input.UserInputType ~= Enum.UserInputType.MouseMovement and (input.UserInputType ~= Enum.UserInputType.MouseButton1 and input.UserInputType ~= Enum.UserInputType.Touch) then
                         titlebarshortclick = true
                     end
+                    inputchange:Disconnect()
                 end
             end)
         end
