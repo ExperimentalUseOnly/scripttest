@@ -63,7 +63,7 @@ function ProBacon:Dragging(frame, parent)
                 if input.UserInputState == Enum.UserInputState.End then
                     ui_dragging = false
                     warn(os.clock()-input_begine_time)
-                    if (os.clock()-input_begine_time <= 0.15) then
+                    if (os.clock()-input_begine_time <= 0.15) and (game:GetService("UserInputService"):GetMouseLocation() - mousePos).Magnitude < 2 then
                         titlebarshortclick = true
                     end
                     inputchange:Disconnect()
@@ -328,7 +328,7 @@ function ProBacon.CreateGui(title, background_color_template)
     	end
     end)
     local uibaseinput = function(input)
-    	if (input == "pilltouch" and ui_pill) or ((input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1) and not ui_dragging and not ui_pill) then
+    	if (input == "pilltouch" and ui_pill) or (not ui_pill and (input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1) and not ui_dragging) then
     		if not ui_expanded then
     			ui_expanded = true
                 game:GetService("TweenService"):Create(ui_base.title_bar, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(1,0,0,24)}):Play()
