@@ -52,6 +52,7 @@ function ProBacon:Dragging(frame, parent)
     local dragInput, mousePos, framePos
     local input_begine_time
     frame.InputBegan:Connect(function(input)
+        print(input.UserInputType, input.UserInputState)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             input_begine_time = os.clock()
             ui_dragging = true
