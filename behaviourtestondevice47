@@ -62,7 +62,7 @@ function ProBacon.CreateGui(title, background_color_template)
     local ui_base_corner = Instance.new("UICorner", ui_base)
     ui_base_corner.CornerRadius = UDim.new(0,0)
     local UIGradient = Instance.new("UIGradient", ui_base)
-    local title_bar = Instance.new("TextButton", ui_base)
+    local title_bar = Instance.new("TextButton", ui_base)  --Text button bc idk why camera also moves on mobile
     local close = Instance.new("ImageButton", title_bar)
     local ui_title = Instance.new("TextLabel", title_bar)
     local minimize = Instance.new("ImageButton", title_bar)
@@ -99,6 +99,10 @@ function ProBacon.CreateGui(title, background_color_template)
     title_bar.BorderSizePixel = 0
     title_bar.Position = UDim2.new(0.5, 0, 0, 12)
     title_bar.Size = UDim2.new(1, 0, 0, 24)
+    --Button prop
+    title_bar.TextTransparency = 1
+    title_bar.Text = ""
+    title_bar.AutoButtonColor = false
 
     close.Name = "close"
     close.AnchorPoint = Vector2.new(1, 0.5)
