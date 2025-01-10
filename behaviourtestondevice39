@@ -310,7 +310,7 @@ function ProBacon.CreateGui(title, background_color_template)
 
     ui_base.InputBegan:Connect(function(input)
         local lastmouseloc = game:GetService("UserInputService"):GetMouseLocation()
-        local input_begine_time, inputchange
+        local input_begine_time
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             input_begine_time = os.clock()
             input.Changed:Connect(function()
@@ -321,7 +321,7 @@ function ProBacon.CreateGui(title, background_color_template)
             end)
         end
     end)
-    local dragInput, mousePos, framePos, input_begine_time, inputchange
+    local dragInput, mousePos, framePos, input_begine_time
     title_bar.InputBegan:Connect(function(input)
         local lastmouseloc = game:GetService("UserInputService"):GetMouseLocation()
         if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and (ui_pilled or ui_expanded) then
