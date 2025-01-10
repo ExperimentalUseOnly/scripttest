@@ -182,9 +182,12 @@ function ProBacon.CreateGui(title, background_color_template)
     function ProBacon:toggle_ui(state)
     	local tween
     	if state then
+            ui_base_corner.CornerRadius = UDim.new(0.25,0)
+            game:GetService("TweenService"):Create(ui_base_corner, TweenInfo.new(0.5, Enum.EasingStyle.Cubic), {CornerRadius = UDim.new(0,0)})
     		tween = game:GetService("TweenService"):Create(ui_base, TweenInfo.new(0.25), {Size = UDim2.new(0, 475, 0, 285)})
     	else
     		tween = game:GetService("TweenService"):Create(ui_base, TweenInfo.new(0.25), {Size = UDim2.new(0,0,0,0)})
+            game:GetService("TweenService"):Create(ui_base_corner, TweenInfo.new(0.25, Enum.EasingStyle.Cubic), {CornerRadius = UDim.new(0.5,0)})
     	end
     	tween:Play()
     	tween.Completed:Wait()
