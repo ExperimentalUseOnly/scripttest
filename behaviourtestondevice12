@@ -1,4 +1,9 @@
 local ProBacon = {}
+local ui_dragging = false
+local expanded_ui_pos
+local ui_expanded = true
+local ui_pill = false
+local titlebarshortclick = false
 getgenv().ui_background_color_scheme = {
 	["Under the Lake"] = {
 		ColorSequenceKeypoint.new(0.00, Color3.fromRGB(9, 48, 40)),
@@ -42,7 +47,38 @@ getgenv().ui_background_color_scheme = {
 	},
 }
 
-
+function ProBacon:Dragging(frame, parent)
+    parent = parent or frame
+    local dragInput, mousePos, framePos
+    frame.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            local input_begine_time = os.clock()
+            ui_dragging = true
+            mousePos = input.Position
+            framePos = parent.Position
+            
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    ui_dragging = false
+                    if os.clock() - input_begine_time <= 0.3 then
+                        titlebarshortclick = true
+                    end
+                end
+            end)
+        end
+    end)
+    frame.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+            dragInput = input
+        end
+    end)
+    game:GetService("UserInputService").InputChanged:Connect(function(input)
+        if input == dragInput and ui_dragging then
+            local delta = input.Position - mousePos
+            parent.Position  = UDim2.new(framePos.X.Scale, framePos.X.Offset + delta.X, framePos.Y.Scale, framePos.Y.Offset + delta.Y)
+        end
+    end)
+end
 
 
 
@@ -61,7 +97,7 @@ function ProBacon.CreateGui(title, background_color_template)
     local ui_base_corner = Instance.new("UICorner", ui_base)
     ui_base_corner.CornerRadius = UDim.new(0,0)
     local UIGradient = Instance.new("UIGradient", ui_base)
-    local title_bar = Instance.new("TextButton", ui_base)
+    local title_bar = Instance.new("Frame", ui_base)
     local close = Instance.new("ImageButton", title_bar)
     local ui_title = Instance.new("TextLabel", title_bar)
     local minimize = Instance.new("ImageButton", title_bar)
@@ -90,6 +126,7 @@ function ProBacon.CreateGui(title, background_color_template)
     background_color_template = background_color_template or "Under the Lake"
     UIGradient.Color = ColorSequence.new{unpack(findcolorsequencesbyname(background_color_template))}
 
+    ProBacon:Dragging(title_bar, ui)
     title_bar.Name = "title_bar"
     title_bar.AnchorPoint = Vector2.new(0.5, 0.5)
     title_bar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -98,8 +135,6 @@ function ProBacon.CreateGui(title, background_color_template)
     title_bar.BorderSizePixel = 0
     title_bar.Position = UDim2.new(0.5, 0, 0, 12)
     title_bar.Size = UDim2.new(1, 0, 0, 24)
-    title_bar.TextTransparency = 1
-    title_bar.AutoButtonColor = false
 
     close.Name = "close"
     close.AnchorPoint = Vector2.new(1, 0.5)
@@ -191,46 +226,6 @@ function ProBacon.CreateGui(title, background_color_template)
     	ui_base_gradient.Rotation = ui_base_gradient.Rotation + 1
     end)
 
-    local ui_dragging = false
-    local dragInput, mousePos, framePos
-    --[[
-    title_bar.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch  then
-            ui_dragging = true
-        end
-    end)
-    title_bar.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch  then
-            ui_dragging = false
-        end
-    end)
-    ]]
-    title_bar.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-            ui_dragging = true
-            mousePos = input.Position
-            framePos = ui.Position
-            
-            input.Changed:Connect(function()
-                if input.UserInputState == Enum.UserInputState.End then
-                    ui_dragging = false
-                end
-            end)
-        end
-    end)
-
-    title_bar.InputChanged:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-            ui_dragging = input
-        end
-    end)
-
-    game:GetService("UserInputService").InputChanged:Connect(function(input)
-        if input == dragInput and ui_dragging then
-            local delta = input.Position - mousePos
-            ui.Position  = UDim2.new(framePos.X.Scale, framePos.X.Offset + delta.X, framePos.Y.Scale, framePos.Y.Offset + delta.Y)
-        end
-    end)
     close.MouseButton1Click:Connect(function()
         if close.ImageTransparency ~= 1 then
             ProBacon:toggle_ui(false)
@@ -243,9 +238,6 @@ function ProBacon.CreateGui(title, background_color_template)
     end)
     
 
-    local expanded_ui_pos
-    local ui_expanded = true
-    local ui_pill = false
     local setpill = function(state)
     	local time = 0.25
     	if state then
@@ -352,24 +344,14 @@ function ProBacon.CreateGui(title, background_color_template)
     	end
     end
     ui_base.InputBegan:Connect(uibaseinput)
-    --[[
     task.spawn(function()
         while wait() do
-            if ui_dragging then
-                local input_begine_time = os.clock()
-                local mouse = game.Players.LocalPlayer:GetMouse()
-                local ui_to_mouse_offset = Vector2.new(game.Players.LocalPlayer:GetMouse().X - ui.Position.X.Offset, game.Players.LocalPlayer:GetMouse().Y - ui.Position.Y.Offset)
-                repeat
-                    ui.Position = UDim2.new(0, mouse.X-ui_to_mouse_offset.X, 0, mouse.Y-ui_to_mouse_offset.Y)
-                    wait()
-                until not ui_dragging
-                if os.clock() - input_begine_time <= 0.1 and not ui_expanded then
-                    uibaseinput("pilltouch")
-                end
+            if titlebarshortclick and ui_dragging then
+                titlebarshortclick = false
+                uibaseinput("pilltouch")
             end
         end
     end)
-    ]]
 
 
 
