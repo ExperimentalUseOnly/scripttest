@@ -53,7 +53,6 @@ function ProBacon:Dragging(frame, parent)
     local dragInput, mousePos, framePos, input_begine_time, inputchange
     frame.InputBegan:Connect(function(input)
         local lastmouseloc = game:GetService("UserInputService"):GetMouseLocation()
-        print(input.UserInputType, input.UserInputState)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             input_begine_time = os.clock()
             ui_dragging = true
@@ -61,14 +60,10 @@ function ProBacon:Dragging(frame, parent)
             framePos = parent.Position
             
             inputchange = input.Changed:Connect(function()
-                print(input.UserInputType, input.UserInputState)
                 if input.UserInputState == Enum.UserInputState.End then
                     ui_dragging = false
                     local mouseloc = game:GetService("UserInputService"):GetMouseLocation()
-                    warn(os.clock()-input_begine_time)
-                    warn(math.abs(mouseloc.X-lastmouseloc.X), math.abs(mouseloc.Y-lastmouseloc.Y))
                     if (os.clock()-input_begine_time < 0.3) and math.abs(mouseloc.X-lastmouseloc.X)<2 and math.abs(mouseloc.Y-lastmouseloc.Y)<2 then
-                        print('shortclick on pill')
                         titlebarshortclick = true
                     end
                     inputchange:Disconnect()
@@ -362,6 +357,7 @@ function ProBacon.CreateGui(title, background_color_template)
                 if input.UserInputState == Enum.UserInputState.End and (os.clock()-input_begine_time < 0.3) and math.abs(mouseloc.X-lastmouseloc.X)<2 and math.abs(mouseloc.Y-lastmouseloc.Y)<2 then
                     expand_ui()
                 end
+                inputchange:Disconnect()
             end)
         end
     end)
