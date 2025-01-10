@@ -63,7 +63,7 @@ function ProBacon:Dragging(frame, parent)
                 if input.UserInputState == Enum.UserInputState.End then
                     ui_dragging = false
                     warn(os.clock()-input_begine_time <= 0.3)
-                    if (os.clock()-input_begine_time <= 0.3) and input.UserInputType ~= Enum.UserInputType.MouseMovement and (input.UserInputType ~= Enum.UserInputType.MouseButton1 and input.UserInputType ~= Enum.UserInputType.Touch) then
+                    if (os.clock()-input_begine_time <= 0.3) then
                         titlebarshortclick = true
                     end
                     inputchange:Disconnect()
