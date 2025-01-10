@@ -4,7 +4,6 @@ local expanded_ui_pos
 local ui_expanded = true
 local ui_pill = false
 local ui_pilled = false
-local pillshortclick = false
 getgenv().ui_background_color_scheme = {
 	["Under the Lake"] = {
 		ColorSequenceKeypoint.new(0.00, Color3.fromRGB(9, 48, 40)),
@@ -47,38 +46,6 @@ getgenv().ui_background_color_scheme = {
 		ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0,0,0))
 	},
 }
-
-function ProBacon:DraggingEnabled(title_bar, ui)
-    local dragInput, mousePos, framePos, input_begine_time
-    title_bar.InputBegan:Connect(function(input)
-        local lastmouseloc = game:GetService("UserInputService"):GetMouseLocation()
-        if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and (ui_pilled or ui_expanded) then
-            ui_dragging, input_begine_time, mousePos, framePos = true, os.clock(), input.Position, ui.Position
-            
-            input.Changed:Connect(function()
-                if input.UserInputState == Enum.UserInputState.End then
-                    ui_dragging = false
-                    local mouseloc = game:GetService("UserInputService"):GetMouseLocation()
-                    if (os.clock()-input_begine_time < 0.3) and math.abs(mouseloc.X-lastmouseloc.X)<2 and math.abs(mouseloc.Y-lastmouseloc.Y)<2 then
-                        pillshortclick = true
-                    end
-                end
-            end)
-        end
-    end)
-    title_bar.InputChanged:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-            dragInput = input
-        end
-    end)
-    game:GetService("UserInputService").InputChanged:Connect(function(input)
-        if input == dragInput and ui_dragging then
-            local delta = input.Position - mousePos
-            ui.Position  = UDim2.new(framePos.X.Scale, framePos.X.Offset + delta.X, framePos.Y.Scale, framePos.Y.Offset + delta.Y)
-        end
-    end)
-end
-
 
 function ProBacon.CreateGui(title, background_color_template)
     local findcolorsequencesbyname = function(colorscheme)
@@ -124,7 +91,6 @@ function ProBacon.CreateGui(title, background_color_template)
     background_color_template = background_color_template or "Under the Lake"
     UIGradient.Color = ColorSequence.new{unpack(findcolorsequencesbyname(background_color_template))}
 
-    ProBacon:DraggingEnabled(title_bar, ui)
     title_bar.Name = "title_bar"
     title_bar.AnchorPoint = Vector2.new(0.5, 0.5)
     title_bar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -341,7 +307,7 @@ function ProBacon.CreateGui(title, background_color_template)
     		end
     	end
     end
-
+    --[[
     ui_base.InputBegan:Connect(function(input)
         local lastmouseloc = game:GetService("UserInputService"):GetMouseLocation()
         local input_begine_time
@@ -355,19 +321,35 @@ function ProBacon.CreateGui(title, background_color_template)
             end)
         end
     end)
-    task.spawn(function()
-        while wait() do
-            if pillshortclick then
-                pillshortclick = false
-                expand_ui()
-            end
+    ]]
+    local dragInput, mousePos, framePos, input_begine_time
+    title_bar.InputBegan:Connect(function(input)
+        local lastmouseloc = game:GetService("UserInputService"):GetMouseLocation()
+        if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and (ui_pilled or ui_expanded) then
+            ui_dragging, input_begine_time, mousePos, framePos = true, os.clock(), input.Position, ui.Position
+            
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    ui_dragging = false
+                    local mouseloc = game:GetService("UserInputService"):GetMouseLocation()
+                    if (os.clock()-input_begine_time < 0.3) and math.abs(mouseloc.X-lastmouseloc.X)<2 and math.abs(mouseloc.Y-lastmouseloc.Y)<2 then
+                        expand_ui()
+                    end
+                end
+            end)
         end
     end)
-
-
-
-
-
+    title_bar.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+            dragInput = input
+        end
+    end)
+    game:GetService("UserInputService").InputChanged:Connect(function(input)
+        if input == dragInput and ui_dragging then
+            local delta = input.Position - mousePos
+            ui.Position  = UDim2.new(framePos.X.Scale, framePos.X.Offset + delta.X, framePos.Y.Scale, framePos.Y.Offset + delta.Y)
+        end
+    end)
 
 
     local Tabs = {}
