@@ -62,8 +62,9 @@ function ProBacon:Dragging(frame, parent)
                 print(input.UserInputType, input.UserInputState)
                 if input.UserInputState == Enum.UserInputState.End then
                     ui_dragging = false
+                    local mouseloc = game:GetService("UserInputService"):GetMouseLocation()
                     warn(os.clock()-input_begine_time)
-                    if (os.clock()-input_begine_time <= 0.15) and (game:GetService("UserInputService"):GetMouseLocation() - mousePos).Magnitude < 2 then
+                    if (os.clock()-input_begine_time <= 0.15) and math.abs(mouseloc.X-mousePos.X)<2 and math.abs(mouseloc.Y-mousePos.Y)<2 then
                         titlebarshortclick = true
                     end
                     inputchange:Disconnect()
