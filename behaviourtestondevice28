@@ -64,6 +64,7 @@ function ProBacon:Dragging(frame, parent)
                     ui_dragging = false
                     local mouseloc = game:GetService("UserInputService"):GetMouseLocation()
                     warn(os.clock()-input_begine_time)
+                    warn(math.abs(mouseloc.X-mousePos.X), math.abs(mouseloc.Y-mousePos.Y))
                     if (os.clock()-input_begine_time <= 0.15) and math.abs(mouseloc.X-mousePos.X)<2 and math.abs(mouseloc.Y-mousePos.Y)<2 then
                         titlebarshortclick = true
                     end
