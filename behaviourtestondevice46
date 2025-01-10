@@ -62,7 +62,7 @@ function ProBacon.CreateGui(title, background_color_template)
     local ui_base_corner = Instance.new("UICorner", ui_base)
     ui_base_corner.CornerRadius = UDim.new(0,0)
     local UIGradient = Instance.new("UIGradient", ui_base)
-    local title_bar = Instance.new("Frame", ui_base)
+    local title_bar = Instance.new("TextButton", ui_base)
     local close = Instance.new("ImageButton", title_bar)
     local ui_title = Instance.new("TextLabel", title_bar)
     local minimize = Instance.new("ImageButton", title_bar)
@@ -307,7 +307,7 @@ function ProBacon.CreateGui(title, background_color_template)
     		end
     	end
     end
-    --[[
+
     ui_base.InputBegan:Connect(function(input)
         local lastmouseloc = game:GetService("UserInputService"):GetMouseLocation()
         local input_begine_time
@@ -321,7 +321,6 @@ function ProBacon.CreateGui(title, background_color_template)
             end)
         end
     end)
-    ]]
     local dragInput, mousePos, framePos, input_begine_time
     title_bar.InputBegan:Connect(function(input)
         local lastmouseloc = game:GetService("UserInputService"):GetMouseLocation()
