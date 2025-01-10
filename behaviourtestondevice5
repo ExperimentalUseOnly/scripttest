@@ -304,13 +304,14 @@ function ProBacon.CreateGui(title, background_color_template)
     	if input == "pilltouch" or ((input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1) and not ui_dragging) then
     		if not ui_expanded then
     			ui_expanded = true
-                game:GetService("TweenService"):Create(ui_base.title_bar.ui_title, TweenInfo.new(0.5, Enum.EasingStyle.Cubic), {TextTransparency = 0}):Play()
+                game:GetService("TweenService"):Create(ui_base.title_bar, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(1,0,0,24)}):Play()
     			if ui_pill then
                     ui_pill = false
     				setpill(false)
     			end
     			if ui_expanded then
     				setdot(false)
+                    game:GetService("TweenService"):Create(ui_base.title_bar.ui_title, TweenInfo.new(0.5, Enum.EasingStyle.Cubic), {TextTransparency = 0}):Play()
     				game:GetService("TweenService"):Create(ui_base_corner, TweenInfo.new(0.5, Enum.EasingStyle.Cubic), {CornerRadius = UDim.new(0,0)}):Play()
     				game:GetService("TweenService"):Create(ui_base, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 475, 0, 285)}):Play()
     				game:GetService("TweenService"):Create(ui_base, TweenInfo.new(0.5, Enum.EasingStyle.Cubic), {AnchorPoint = Vector2.new(0.5,0.5)}):Play()
