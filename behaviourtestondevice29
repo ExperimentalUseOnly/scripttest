@@ -51,6 +51,7 @@ function ProBacon:Dragging(frame, parent)
     parent = parent or frame
     local dragInput, mousePos, framePos, input_begine_time, inputchange
     frame.InputBegan:Connect(function(input)
+        local lastmouseloc = game:GetService("UserInputService"):GetMouseLocation()
         print(input.UserInputType, input.UserInputState)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             input_begine_time = os.clock()
@@ -64,8 +65,8 @@ function ProBacon:Dragging(frame, parent)
                     ui_dragging = false
                     local mouseloc = game:GetService("UserInputService"):GetMouseLocation()
                     warn(os.clock()-input_begine_time)
-                    warn(math.abs(mouseloc.X-mousePos.X), math.abs(mouseloc.Y-mousePos.Y))
-                    if (os.clock()-input_begine_time <= 0.15) and math.abs(mouseloc.X-mousePos.X)<2 and math.abs(mouseloc.Y-mousePos.Y)<2 then
+                    warn(math.abs(mouseloc.X-lastmouseloc.X), math.abs(mouseloc.Y-lastmouseloc.Y))
+                    if (os.clock()-input_begine_time <= 0.15) and math.abs(mouseloc.X-lastmouseloc.X)<2 and math.abs(mouseloc.Y-lastmouseloc.Y)<2 then
                         titlebarshortclick = true
                     end
                     inputchange:Disconnect()
