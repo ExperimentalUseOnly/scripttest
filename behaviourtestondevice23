@@ -347,7 +347,7 @@ function ProBacon.CreateGui(title, background_color_template)
     		end
     	end
     end
-    ui_base.InputBegan:Connect(uibaseinput)
+    --ui_base.InputBegan:Connect(uibaseinput)
     task.spawn(function()
         while wait() do
             if titlebarshortclick and ui_dragging then
